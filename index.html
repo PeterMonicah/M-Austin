@@ -1,61 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
+  const [form, setForm] = useState({
+    location: "",
+    checkIn: "",
+    checkOut: "",
+    guests: 1,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleSearch = () => {
+    alert(`Searching stays in ${form.location} from ${form.checkIn} to ${form.checkOut} for ${form.guests} guest(s)`);
+  };
+
   return (
-    <div className="bg-white text-gray-800">
+    <div className="bg-[#F9F9F9] text-[#1F2A44] font-sans">
       {/* Hero Section */}
       <div className="relative h-[600px] bg-cover bg-center" style={{ backgroundImage: "url('/images/pool.jpg')" }}>
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white">
-          <h1 className="text-5xl font-bold mb-4">Luxury Stays. Exceptional Service.</h1>
-          <p className="text-lg mb-8">Experience handpicked serviced apartments in Nairobi and beyond.</p>
-          <div className="bg-white bg-opacity-90 p-4 rounded-lg flex space-x-4 text-black">
-            <input className="p-2 border rounded" placeholder="Destination" />
-            <input className="p-2 border rounded" type="date" />
-            <input className="p-2 border rounded" type="date" />
-            <Button className="bg-gold-500 hover:bg-gold-600 text-white">Search</Button>
+          <h1 className="text-5xl font-bold mb-4">A&M Staycations</h1>
+          <p className="text-lg mb-6">Stay with class. Discover premium serviced apartments.</p>
+
+          {/* Booking Form */}
+          <div className="bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-4 gap-4 w-[90%] max-w-4xl">
+            <input name="location" type="text" value={form.location} onChange={handleInputChange} placeholder="Location" className="p-3 rounded-lg border" />
+            <input name="checkIn" type="date" value={form.checkIn} onChange={handleInputChange} className="p-3 rounded-lg border" />
+            <input name="checkOut" type="date" value={form.checkOut} onChange={handleInputChange} className="p-3 rounded-lg border" />
+            <select name="guests" value={form.guests} onChange={handleInputChange} className="p-3 rounded-lg border">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <option key={num} value={num}>{num} Guest{num > 1 ? 's' : ''}</option>
+              ))}
+            </select>
+            <div className="col-span-full flex justify-center">
+              <Button onClick={handleSearch} className="bg-[#D4AF37] hover:bg-yellow-600 text-white px-6 py-3 rounded-lg">Search Now</Button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Featured Properties */}
-      <section className="py-12 px-8">
+      <section className="py-12 px-6">
         <h2 className="text-3xl font-semibold text-center mb-8">Featured Properties</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {["Killimani", "Westlands", "Embakasi"].map((location, i) => (
-            <div key={i} className="rounded-xl overflow-hidden shadow-lg">
-              <img src={`/images/property${i + 1}.jpg`} alt="Property" className="w-full h-64 object-cover" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {["Kilimani Haven", "Westlands Suites", "Embakasi Luxe"].map((location, i) => (
+            <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden">
+              <img src={`/images/property${i + 1}.jpg`} alt={location} className="w-full h-56 object-cover" />
               <div className="p-4">
-                <h3 className="font-semibold text-xl mb-2">{location} Apartment</h3>
-                <p className="text-sm">KES {(i + 1) * 4000}/night</p>
-                <p className="text-sm">2 Guests • WiFi • Kitchen</p>
+                <h3 className="text-xl font-semibold mb-2">{location}</h3>
+                <p className="text-sm text-gray-600 mb-1">KES {(i + 1) * 5000}/night</p>
+                <p className="text-sm">2 Guests · WiFi · Kitchen · Free Parking</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Booking Section */}
-      <section className="bg-navy text-white py-12 px-8">
-        <h2 className="text-3xl font-semibold text-center mb-6">Book Your Stay with Ease</h2>
-        <p className="text-center mb-4">We support M-PESA, Bank Transfer, and Mobile Money payments.</p>
-        <div className="flex justify-center">
-          <Button className="bg-gold-500 hover:bg-gold-600 text-white">Booking</Button>
-        </div>
+      {/* Payment Options */}
+      <section className="bg-[#1F2A44] text-white py-10 text-center">
+        <h2 className="text-2xl font-semibold mb-4">Secure Payment Options</h2>
+        <p>M-PESA · Bank Transfer · Mobile Money</p>
       </section>
 
-      {/* Reviews */}
-      <section className="py-12 px-8">
+      {/* Testimonials */}
+      <section className="bg-white py-12 px-6">
         <h2 className="text-3xl font-semibold text-center mb-6">Guest Reviews</h2>
-        <div className="bg-gray-100 rounded-xl p-6 max-w-xl mx-auto text-center">
-          <p className="italic mb-2">"Our stay was fantastic! The apartment was beautifully furnished and the service was top notch. Highly recommend."</p>
-          <p className="font-bold">Stephen M.</p>
+        <div className="max-w-2xl mx-auto text-center text-gray-700 italic">
+          <p>"An unforgettable experience. The unit was sparkling clean, well-furnished, and service was top tier!"</p>
+          <p className="mt-2 font-bold">- Naomi W.</p>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-black text-white text-center py-6">
         <p>&copy; {new Date().getFullYear()} A&M Staycations. All Rights Reserved.</p>
+        <p className="text-sm">Contact: info@amstaycations.com | WhatsApp: +254712345678</p>
       </footer>
     </div>
   );
